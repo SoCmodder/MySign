@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MySign</string>
+    <string name="GPS_dialog_message">GPS needs to be enabled in order to continue. Enable GPS now?</string>
+    <string name="GPS_dialog_title">Enable GPS</string>
 </resources>
