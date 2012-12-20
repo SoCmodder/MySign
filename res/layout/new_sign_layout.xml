@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginLeft="10dp"
+                      android:id="@+id/install_linear_layout">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/install_tv"
+                      android:textSize="23dp"
+                      android:text="Installation Date"
+                      android:textColor="#00ddff"/>
+            <CheckBox android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_toRightOf="@+id/install_tv"
+                      android:layout_marginLeft="17dp"
+                      android:id="@+id/install_checkbox"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginLeft="10dp"
+                      android:layout_marginTop="10dp"
+                      android:layout_below="@+id/install_linear_layout"
+                      android:id="@+id/replace_linear_layout">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/replace_tv"
+                      android:textSize="23dp"
+                      android:text="Replacement Date"
+                      android:textColor="#00ddff"/>
+            <CheckBox android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_toRightOf="@+id/replace_tv"
+                      android:id="@+id/replace_checkbox"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginLeft="10dp"
+                      android:layout_marginTop="10dp"
+                      android:layout_below="@+id/replace_linear_layout"
+                      android:id="@+id/maint_linear_layout">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/maintenance_tv"
+                      android:textSize="23dp"
+                      android:text="Maintenance Date"
+                      android:textColor="#00ddff"/>
+            <CheckBox android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_toRightOf="@+id/maintenance_tv"
+                      android:id="@+id/replace_checkbox"/>
+        </LinearLayout>
+
+        <ImageButton android:layout_width="200dp"
+                     android:layout_height="200dp"
+                     android:layout_alignParentRight="true"
+                     android:layout_marginRight="30dp"
+                     android:layout_marginTop="5dp"
+                     android:id="@+id/thumb_imageview"
+                     android:background="#00ddff"/>
+
+        <LinearLayout android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:id="@+id/form_linear_layout"
+                      android:layout_marginTop="50dp"
+                      android:layout_below="@+id/thumb_imageview">
+            <EditText android:layout_width="300dp"
+                      android:layout_height="40dp"
+                      android:id="@+id/city_et"
+                      android:hint="city"/>
+            <EditText android:layout_width="300dp"
+                      android:layout_height="40dp"
+                      android:id="@+id/state_et"
+                      android:hint="state"/>
+            <EditText android:layout_width="300dp"
+                      android:layout_height="40dp"
+                      android:id="@+id/county_et"
+                      android:hint="county"/>
+            <EditText android:layout_width="300dp"
+                      android:layout_height="40dp"
+                      android:id="@+id/street_et"
+                      android:hint="street name"/>
+            <EditText android:layout_width="300dp"
+                      android:layout_height="40dp"
+                      android:id="@+id/intersection_et"
+                      android:hint="intersects with"/>
+            <EditText android:layout_width="300dp"
+                      android:layout_height="40dp"
+                      android:id="@+id/reflect_et"
+                      android:hint="reflectivity reading"/>
+        </LinearLayout>
+
+        <Button android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:id="@+id/submit_button"
+                android:layout_below="@+id/form_linear_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:text="Submit New Sign"/>
+    </RelativeLayout>
+</ScrollView>

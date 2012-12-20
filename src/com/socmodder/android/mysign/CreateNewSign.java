@@ -5,17 +5,25 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.*;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,11 +34,16 @@ import java.util.Locale;
 public class CreateNewSign extends Activity {
     EditText state, city, county, street, intersection, reflectivity;
     DatePicker install, replace, maint;
-    Button autofill;
+    CheckBox installBox, replaceBox, maintBox;
+    static ImageButton takePhoto;
     LocationManager locationManager;
     Location loc;
     LocationProvider provider;
     AlertDialog GPSDialog;
+    Bitmap mImageBitmap;
+    String imageName;
+    CompoundButton.OnCheckedChangeListener checkboxListener;
+    Button submitButton;
 
     private final LocationListener listener = new LocationListener() {
         @Override
@@ -54,41 +67,61 @@ public class CreateNewSign extends Activity {
         }
     };
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_new_sign_layout);
+        setContentView(R.layout.new_sign_layout);
 
         setupLayoutItems();
+    }
 
-        autofill.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Setup a loading thing to wait while the device gets the location
-                //then get the different aspects needed from the location data.
-                if(loc != null){
-                    Toast.makeText(getApplicationContext(), "Latitude: " + String.valueOf(loc.getLatitude()), Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "We don't need no stinking GPS", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == 0 && resultCode == RESULT_OK){
+            mImageBitmap = (Bitmap) data.getExtras().get("data");
+            takePhoto.setImageBitmap(mImageBitmap);
+        }
     }
 
     public void setupLayoutItems(){
-        state = (EditText)findViewById(R.id.state_tv);
-        city = (EditText)findViewById(R.id.city_tv);
-        county = (EditText)findViewById(R.id.county_tv);
-        street = (EditText)findViewById(R.id.streetname_tv);
-        intersection = (EditText)findViewById(R.id.intersection_tv);
-        reflectivity = (EditText)findViewById(R.id.reflectivity_tv);
+        state = (EditText)findViewById(R.id.state_et);
+        city = (EditText)findViewById(R.id.city_et);
+        county = (EditText)findViewById(R.id.county_et);
+        street = (EditText)findViewById(R.id.street_et);
+        intersection = (EditText)findViewById(R.id.intersection_et);
+        reflectivity = (EditText)findViewById(R.id.reflect_et);
 
-        install = (DatePicker)findViewById(R.id.install_datepicker);
-        replace = (DatePicker)findViewById(R.id.replace_datepicker);
-        maint = (DatePicker)findViewById(R.id.maint_datepicker);
+        takePhoto = (ImageButton)findViewById(R.id.thumb_imageview);
 
-        autofill = (Button)findViewById(R.id.autofill_button);
+        submitButton = (Button)findViewById(R.id.submit_button);
+
+        checkboxListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+            }
+        };
+
+        takePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, 0);
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String State, City, County, Street, Intersection, Reflectivity;
+                State = state.getText().toString();
+                City = city.getText().toString();
+                County = county.getText().toString();
+                Street = street.getText().toString();
+                Intersection = intersection.getText().toString();
+                Reflectivity = reflectivity.getText().toString();
+            }
+        });
     }
 
     @Override
@@ -106,6 +139,8 @@ public class CreateNewSign extends Activity {
             GPSDialog.show();
         }
     }
+
+
 
     public void createGPSSettingsDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -131,6 +166,5 @@ public class CreateNewSign extends Activity {
         Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         startActivity(settingsIntent);
     }
-
 }
 
