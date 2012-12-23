@@ -16,11 +16,15 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.*;
+import com.j256.ormlite.dao.Dao;
+import com.socmodder.android.database.DatabaseHelper;
+import com.socmodder.android.database.Sign;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -44,6 +48,10 @@ public class CreateNewSign extends Activity {
     String imageName;
     CompoundButton.OnCheckedChangeListener checkboxListener;
     Button submitButton;
+    DatabaseHelper helper;
+
+    Sign newSign;
+    Dao<Sign, Integer> signDao = null;
 
     private final LocationListener listener = new LocationListener() {
         @Override
@@ -95,6 +103,14 @@ public class CreateNewSign extends Activity {
 
         submitButton = (Button)findViewById(R.id.submit_button);
 
+        helper = new DatabaseHelper(getApplicationContext());
+
+        try {
+            signDao = helper.getDao();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         checkboxListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -113,13 +129,36 @@ public class CreateNewSign extends Activity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String State, City, County, Street, Intersection, Reflectivity;
+                String State, City, County, Street, Intersection;
+
+                double Reflectivity;
+                double lat=0;
+                double lon=0;
+
                 State = state.getText().toString();
                 City = city.getText().toString();
                 County = county.getText().toString();
                 Street = street.getText().toString();
                 Intersection = intersection.getText().toString();
-                Reflectivity = reflectivity.getText().toString();
+                Reflectivity = Double.parseDouble(reflectivity.getText().toString());
+                lat = loc.getLatitude();
+                lon = loc.getLongitude();
+
+                if(!State.equals(null)&&!City.equals(null)&&!County.equals(null)&&!Street.equals(null)){
+                    newSign = new Sign(County, State, City, Street, Intersection, Reflectivity, lat, lon);
+                    finish();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Please fill required fields", Toast.LENGTH_LONG).show();
+                }
+
+                if(signDao != null){
+                    try {
+                        signDao.create(newSign);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }
@@ -140,7 +179,23 @@ public class CreateNewSign extends Activity {
         }
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        locationManager.removeUpdates(listener);
+    }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, listener);
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        locationManager.removeUpdates(listener);
+    }
 
     public void createGPSSettingsDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

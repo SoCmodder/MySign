@@ -51,11 +51,15 @@ public class Sign {
         //needed by ormlite
     }
 
-    public Sign(String county, String state, String city, String streetName, String intersection){
+    public Sign(String county, String state, String city, String streetName, String intersection, double lat, double lon, double reflect){
         this.county = county;
         this.state = state;
         this.city = city;
         this.streetName = streetName;
         this.intersection = intersection;
+
+        this.longitude = lon;
+        this.latitude = lat;
+        this.reflectivityReading = reflect;
     }
 }

@@ -3,6 +3,7 @@ package com.socmodder.android.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -21,6 +22,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     //any time changes are made to database objects, database version should be incremented
     private static final int DATABASE_VERSION = 1;
 
+    private static Dao<Sign, Integer> signDao = null;
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -38,5 +41,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
 
+    }
+
+    public Dao<Sign, Integer> getDao() throws SQLException{
+        if(signDao == null){
+            signDao = getDao(Sign.class);
+        }
+        return signDao;
+    }
+
+    @Override
+    public void close(){
+        super.close();
     }
 }
