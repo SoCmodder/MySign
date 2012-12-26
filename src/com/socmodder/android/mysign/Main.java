@@ -10,7 +10,7 @@ public class Main extends Activity {
     /**
      * Called when the activity is first created.
      */
-    Button createNewSign;
+    Button createNewSign, searchSignButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -18,14 +18,24 @@ public class Main extends Activity {
         setContentView(R.layout.main);
 
         final Intent createSign = new Intent(this, CreateNewSign.class);
+        final Intent searchSigns = new Intent(this, SearchSigns.class);
         createSign.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        searchSigns.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
         createNewSign = (Button)findViewById(R.id.newSignButton);
+        searchSignButton = (Button)findViewById(R.id.searchSignsButton);
 
         createNewSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(createSign);
+            }
+        });
+
+        searchSignButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(searchSigns);
             }
         });
     }

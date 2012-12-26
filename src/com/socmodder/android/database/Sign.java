@@ -14,38 +14,38 @@ import java.sql.Date;
 @DatabaseTable
 public class Sign {
     @DatabaseField(generatedId = true)
-    int id;
+    private int id;
     @DatabaseField(indexName = "county")
-    String county;
+    private String county;
     @DatabaseField(indexName = "state")
-    String state;
+    private String state;
     @DatabaseField(indexName = "city")
-    String city;
+    private String city;
 
     @DatabaseField(indexName = "streetName")
-    String streetName;
+    private String streetName;
     @DatabaseField(indexName = "streetIntersection")
-    String intersection;
+    private String intersection;
 
     @DatabaseField(indexName = "lat")
-    double longitude;
+    private double longitude;
     @DatabaseField(indexName = "lon")
-    double latitude;
+    private double latitude;
 
     @DatabaseField
-    double reflectivityReading;
+    private double reflectivityReading;
 
     @DatabaseField
-    Date installDate;
+    private Date installDate;
     @DatabaseField
-    Date replaceDate;
+    private Date replaceDate;
     @DatabaseField
-    Date maintenanceDate;
+    private Date maintenanceDate;
 
     @DatabaseField
-    String signManufacturer;
+    private String signManufacturer;
     @DatabaseField
-    String postType;
+    private String postType;
 
     Sign(){
         //needed by ormlite
@@ -61,5 +61,13 @@ public class Sign {
         this.longitude = lon;
         this.latitude = lat;
         this.reflectivityReading = reflect;
+    }
+
+    public String getStreetName(){
+        return this.streetName;
+    }
+
+    public String getCity(){
+        return this.city;
     }
 }
