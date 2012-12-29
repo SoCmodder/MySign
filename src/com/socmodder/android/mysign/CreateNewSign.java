@@ -20,14 +20,13 @@ import com.j256.ormlite.dao.Dao;
 import com.socmodder.android.database.DatabaseHelper;
 import com.socmodder.android.database.Sign;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+
+import static com.j256.ormlite.android.apptools.OpenHelperManager.getHelper;
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,7 +47,6 @@ public class CreateNewSign extends Activity {
     String imageName;
     CompoundButton.OnCheckedChangeListener checkboxListener;
     Button submitButton;
-    DatabaseHelper helper;
 
     Sign newSign;
     Dao<Sign, Integer> signDao = null;
@@ -85,10 +83,17 @@ public class CreateNewSign extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
         if(requestCode == 0 && resultCode == RESULT_OK){
             mImageBitmap = (Bitmap) data.getExtras().get("data");
             takePhoto.setImageBitmap(mImageBitmap);
         }
+
+        //take that image and save it. Maybe I can do it from here?
+        String name = "FileName" + ".jpg";
+        imageName = name;
+        writePhotoJPG(mImageBitmap, name);
     }
 
     public void setupLayoutItems(){
@@ -103,10 +108,8 @@ public class CreateNewSign extends Activity {
 
         submitButton = (Button)findViewById(R.id.submit_button);
 
-        helper = new DatabaseHelper(getApplicationContext());
-
         try {
-            signDao = helper.getDao();
+            signDao = getHelper(getApplicationContext(), DatabaseHelper.class).getSignDao();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -122,6 +125,7 @@ public class CreateNewSign extends Activity {
             @Override
             public void onClick(View view) {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
                 startActivityForResult(cameraIntent, 0);
             }
         });
@@ -220,6 +224,27 @@ public class CreateNewSign extends Activity {
     private void enableLocationSettings(){
         Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         startActivity(settingsIntent);
+    }
+
+    public void writePhotoJPG(Bitmap b, String name){
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+
+        File directory = new File(Environment.getExternalStorageDirectory()+File.separator+"MySign");
+        if(!directory.exists() && !directory.isDirectory()){
+            directory.mkdirs();
+        }
+        File f = new File(Environment.getExternalStorageDirectory() + File.separator + "MySign" + File.separator + name);
+
+        try {
+            f.createNewFile();
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+            fo.flush();
+            fo.close();
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 }
 

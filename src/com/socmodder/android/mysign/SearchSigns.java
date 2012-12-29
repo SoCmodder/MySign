@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.j256.ormlite.android.apptools.OpenHelperManager.getHelper;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Mitch Miller
@@ -38,10 +40,10 @@ public class SearchSigns extends Activity {
     @Override
     public void onStart(){
         super.onStart();
-        /*List<Sign> signs = querySigns();
+        List<Sign> signs = querySigns();
         if(signs != null){
             listView.setAdapter(new SignArrayAdapter(this, signs));
-        } */
+        }
     }
 
     @Override
@@ -68,14 +70,16 @@ public class SearchSigns extends Activity {
 
     public List querySigns(){
         try {
-            signDao = helper.getDao();
+            signDao = getHelper(getApplicationContext(), DatabaseHelper.class).getSignDao();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         List<Sign> signList = null;
         try {
-            signList = signDao.queryForAll();
+            if(signDao != null){
+                signList = signDao.queryForAll();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

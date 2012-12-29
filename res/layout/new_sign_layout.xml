@@ -75,26 +75,32 @@
             <EditText android:layout_width="300dp"
                       android:layout_height="40dp"
                       android:id="@+id/city_et"
+                      android:inputType="textCapSentences"
                       android:hint="city"/>
             <EditText android:layout_width="300dp"
                       android:layout_height="40dp"
                       android:id="@+id/state_et"
+                      android:inputType="textCapSentences"
                       android:hint="state"/>
             <EditText android:layout_width="300dp"
                       android:layout_height="40dp"
                       android:id="@+id/county_et"
+                      android:inputType="textCapSentences"
                       android:hint="county"/>
             <EditText android:layout_width="300dp"
                       android:layout_height="40dp"
                       android:id="@+id/street_et"
+                      android:inputType="textCapSentences"
                       android:hint="street name"/>
             <EditText android:layout_width="300dp"
                       android:layout_height="40dp"
                       android:id="@+id/intersection_et"
+                      android:inputType="textCapSentences"
                       android:hint="intersects with"/>
             <EditText android:layout_width="300dp"
                       android:layout_height="40dp"
                       android:id="@+id/reflect_et"
+                      android:inputType="number"
                       android:hint="reflectivity reading"/>
         </LinearLayout>
 

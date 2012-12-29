@@ -43,7 +43,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     }
 
-    public Dao<Sign, Integer> getDao() throws SQLException{
+    public Dao<Sign, Integer> getSignDao() throws SQLException{
         if(signDao == null){
             signDao = getDao(Sign.class);
         }

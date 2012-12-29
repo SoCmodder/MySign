@@ -47,6 +47,9 @@ public class Sign {
     @DatabaseField
     private String postType;
 
+    @DatabaseField
+    private String imageName;
+
     Sign(){
         //needed by ormlite
     }
@@ -69,5 +72,29 @@ public class Sign {
 
     public String getCity(){
         return this.city;
+    }
+
+    public String getImageName(){
+        return this.imageName;
+    }
+
+    public String getSignManufacturer(){
+        return this.signManufacturer;
+    }
+
+    public String getCounty(){
+        return this.county;
+    }
+
+    public String getState(){
+        return this.state;
+    }
+
+    public String getIntersection(){
+        return this.intersection;
+    }
+
+    public String getPostType(){
+        return this.postType;
     }
 }
